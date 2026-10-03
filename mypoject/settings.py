@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = '/admin/login/' 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
@@ -40,6 +46,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'employees',
     'workplaces',
+    'django_cleanup.apps.CleanupConfig', 
 ]
 
 MIDDLEWARE = [
@@ -57,7 +64,7 @@ ROOT_URLCONF = 'mypoject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,3 +135,11 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+# Куда отправлять пользователя при успешном входе
+LOGIN_REDIRECT_URL = 'employees:index'
+
+# Куда отправлять пользователя после выхода из аккаунта
+LOGOUT_REDIRECT_URL = 'employees:index'
+
+# Ссылка на страницу входа (используется декоратором @login_required)
+LOGIN_URL = 'login'

@@ -74,3 +74,31 @@ class EmployeeSkill(models.Model):
 
     def __str__(self):
         return f"{self.skill.name} ({self.level})"
+
+    
+class EmployeeImage(models.Model):
+    employee = models.ForeignKey(
+        EmployeeProfile, 
+        on_delete=models.CASCADE, 
+        related_name='images', 
+        verbose_name="Сотрудник"
+    )
+    
+    # Заменили на FileField. Загрузка в папку media/employee_gallery/
+    image = models.FileField(
+        upload_to='employee_gallery/', 
+        verbose_name="Файл изображения"
+    )
+    
+    position = models.PositiveIntegerField(
+        default=1, 
+        verbose_name="Порядковый номер"
+    )
+
+    class Meta:
+        verbose_name = "Изображение сотрудника"
+        verbose_name_plural = "Галерея изображений"
+        ordering = ['position', 'id']
+
+    def __str__(self):
+        return f"Фото {self.position} для {self.employee.last_name}"
